@@ -21,7 +21,7 @@ export async function getPictures(searchWord, page) {
     if (response.status !== 200) {
       throw new Error(response.status);
     }
-    if (page === 1) {
+    if (page === 1 && response.data.hits.length !== 0) {
       Notify.info(`Hooray! We found ${response.data.totalHits} images.`);
     }
     return response.data.hits;
