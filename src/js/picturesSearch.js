@@ -1,29 +1,40 @@
 import { Notify } from 'notiflix';
 import { getPictures } from './fetchPictures';
 import refsList from './refs';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = refsList();
 let page = 1;
 let searchWord = '';
+let gallery = '';
 
-const form = document.querySelector('.search-form');
-
-form.addEventListener('submit', onSubmitSearch);
+refs.form.addEventListener('submit', onSubmitSearch);
 
 function onSubmitSearch(e) {
   e.preventDefault();
+  page = 1;
   refs.gallery.innerHTML = '';
   refs.loadMoreBtn.style.display = 'none';
   refs.footer.style.display = 'none';
-  page = 1;
   searchWord = e.currentTarget.elements.searchQuery.value;
-  getPictures(searchWord, page).then(renderMarkup);
-  page += 1;
-  form.reset();
+  getPictures(searchWord, page)
+    .then(renderMarkup)
+    .then(() => {
+      gallery = new SimpleLightbox('.gallery a');
+    });
+  refs.form.reset();
   refs.loadMoreBtn.addEventListener('click', loadMorePictures);
 }
 
 function renderMarkup(array) {
+  if (array.length === 0 && page !== 1) {
+    console.log(page);
+    page = 1;
+    return Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
   if (array.length === 0) {
     return Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
@@ -40,39 +51,37 @@ function renderMarkup(array) {
         comments,
         downloads,
       }) =>
-        `<div class="photo-card">
-  <img src="${webformatURL}" alt=" ${tags}" width="300" height="200" loading="lazy" />
+        `<a class="gallery-link" href="${largeImageURL}"><div class="photo-card">
+  <img src="${webformatURL}" alt=" ${tags}" width="315" height="208" loading="lazy" />
+  
   <div class="info">
     <p class="info-item">
-      <b>Likes ${likes}</b>
+      <b>Likes</b>${likes}
     </p>
     <p class="info-item">
-      <b>Views  ${views}</b>
+      <b>Views </b>${views}
     </p>
     <p class="info-item">
-      <b>Comments ${comments}</b>
+      <b>Comments</b>${comments}
     </p>
     <p class="info-item">
-      <b>Downloads  ${downloads}</b>
+      <b>Downloads </b>${downloads}
     </p>
   </div>
-</div>`
+</div></a>`
     )
     .join('');
   refs.loadMoreBtn.style.display = 'block';
-  refs.footer.style.display = 'block';
+  refs.footer.style.display = 'flex';
+  page += 1;
   return refs.gallery.insertAdjacentHTML('beforeend', markup);
 }
 
 function loadMorePictures() {
-  getPictures(searchWord, page).then(renderMarkup);
-  page += 1;
+  getPictures(searchWord, page)
+    .then(renderMarkup)
+    .then(() => {
+      gallery.destroy();
+      gallery = new SimpleLightbox('.gallery a');
+    });
 }
-/* webformatURL - ссылка на маленькое изображение для списка карточек.
-largeImageURL - ссылка на большое изображение.
-tags - строка с описанием изображения. Подойдет для атрибута alt.
-likes - количество лайков.
-views - количество просмотров.
-comments - количество комментариев.
-downloads - количество загрузок.
- */
