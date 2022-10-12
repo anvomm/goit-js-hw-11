@@ -1,0 +1,16 @@
+.load-more {
+  display: none;
+  padding: 8px 15px;
+  margin: 30px auto;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: rgb(158, 107, 151);
+
+  &:hover,
+  &:focus {
+    background-color: rgb(202, 132, 190);
+  }
+}
