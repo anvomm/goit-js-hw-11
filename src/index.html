@@ -8,19 +8,33 @@
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit" aria-label="search">
-        <svg class="button-icon" width="12" height="12">
-          <use href="./images/sprite.svg#icon-search"></use>
+    <header class="header">
+      <form class="search-form" id="search-form">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button class="form-button" type="submit" aria-label="search">
+          <svg class="button-icon" width="12" height="12">
+            <use href="./images/sprite.svg#icon-search"></use>
+          </svg>
+        </button>
+      </form>
+    </header>
+    <div class="gallery">
+      <!-- Карточки изображений -->
+    </div>
+    <button type="button" class="load-more">Load more</button>
+    <footer class="footer">
+      <p class="footer-text">
+        Pictures are loaded from
+        <svg class="footer-icon" width="120" height="18">
+          <use href="./images/sprite.svg#pixabay"></use>
         </svg>
-      </button>
-    </form>
+      </p>
+    </footer>
     <script type="module" src="./js/picturesSearch.js"></script>
   </body>
 </html>
