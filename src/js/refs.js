@@ -4,5 +4,6 @@ export default function refs() {
     form: document.querySelector('.search-form'),
     loadMoreBtn: document.querySelector('.load-more'),
     footer: document.querySelector('.footer'),
+    scrollBtn: document.querySelector('.btn-position'),
   };
 }

@@ -1,0 +1,32 @@
+.scroll-to-top {
+  position: relative;
+}
+
+.btn-position {
+  position: fixed;
+  bottom: 40px;
+  right: 25px;
+  z-index: 100000000;
+}
+
+.btn-style {
+  background-color: rgb(158, 107, 151);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.5s linear;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+
+  &:hover {
+    background: #fff;
+    color: rgb(158, 107, 151);
+    border: 2px solid rgb(158, 107, 151);
+  }
+}
