@@ -27,7 +27,7 @@ export function renderMarkup(array) {
         downloads,
       }) =>
         `<a class="gallery-link" href="${largeImageURL}"><div class="photo-card">
-  <img src="${webformatURL}" alt=" ${tags}" width="315" height="208" loading="lazy" />
+  <img src="${webformatURL}" alt=" ${tags}" width="280" height="190" loading="lazy" />
   
   <div class="info">
     <p class="info-item">
