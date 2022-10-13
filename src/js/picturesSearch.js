@@ -11,26 +11,26 @@ let gallery = '';
 
 refs.form.addEventListener('submit', onSubmitSearch);
 
-function onSubmitSearch(e) {
+async function onSubmitSearch(e) {
   e.preventDefault();
   page = 1;
   refs.gallery.innerHTML = '';
   refs.loadMoreBtn.style.display = 'none';
   refs.footer.style.display = 'none';
+  refs.loadMoreBtn.removeEventListener('click', loadMorePictures);
   searchWord = e.currentTarget.elements.searchQuery.value;
-  getPictures(searchWord, page)
-    .then(renderMarkup)
-    .then(() => {
-      gallery = new SimpleLightbox('.gallery a');
-    });
+  const search = await getPictures(searchWord, page);
+  renderMarkup(search);
+  gallery = new SimpleLightbox('.gallery a');
   refs.form.reset();
-  refs.loadMoreBtn.addEventListener('click', loadMorePictures);
 }
 
 function renderMarkup(array) {
   if (array.length === 0 && page !== 1) {
     console.log(page);
     page = 1;
+    refs.loadMoreBtn.style.display = 'none';
+    refs.loadMoreBtn.removeEventListener('click', loadMorePictures);
     return Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
@@ -73,15 +73,24 @@ function renderMarkup(array) {
     .join('');
   refs.loadMoreBtn.style.display = 'block';
   refs.footer.style.display = 'flex';
+  refs.loadMoreBtn.addEventListener('click', loadMorePictures);
   page += 1;
   return refs.gallery.insertAdjacentHTML('beforeend', markup);
 }
 
-function loadMorePictures() {
-  getPictures(searchWord, page)
-    .then(renderMarkup)
-    .then(() => {
-      gallery.destroy();
-      gallery = new SimpleLightbox('.gallery a');
-    });
+async function loadMorePictures() {
+  const search = await getPictures(searchWord, page);
+  renderMarkup(search);
+  gallery.refresh();
+  smoothScroll();
+}
+
+function smoothScroll() {
+  const { height: cardHeight } =
+    refs.gallery.firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }
