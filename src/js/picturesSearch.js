@@ -1,4 +1,5 @@
 import { getPictures } from './fetchPictures';
+import { btnVisibility } from './scrollToTop';
 import refsList from './refs';
 import { renderMarkup, loadMorePictures } from './renderMarkup';
 import SimpleLightbox from 'simplelightbox';
@@ -19,6 +20,7 @@ async function onSubmitSearch(e) {
   const search = await getPictures(searchWord, page);
   renderMarkup(search);
   gallery = new SimpleLightbox('.gallery a');
+  gallery.on('show.simplelightbox', btnVisibility());
   refs.form.reset();
 }
 

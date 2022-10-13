@@ -14,7 +14,7 @@ function scrollToTop() {
   });
 }
 
-function btnVisibility() {
+export function btnVisibility() {
   if (window.scrollY > 400) {
     refs.scrollBtn.style.visibility = 'visible';
   } else {
