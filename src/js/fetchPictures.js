@@ -4,6 +4,7 @@ const axios = require('axios').default;
 
 const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '30530922-b2ca10c8a64b9d14f98bafcf1';
+export let totalAmountOfPictures = 0;
 
 export async function getPictures(searchWord, page) {
   try {
@@ -22,8 +23,10 @@ export async function getPictures(searchWord, page) {
       throw new Error(response.status);
     }
     if (page === 1 && response.data.hits.length !== 0) {
+      totalAmountOfPictures = response.data.totalHits;
       Notify.info(`Hooray! We found ${response.data.totalHits} images.`);
     }
+
     return response.data.hits;
   } catch (error) {
     Notify.failure(

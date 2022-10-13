@@ -1,6 +1,6 @@
 import { Notify } from 'notiflix';
 import refsList from './refs';
-import { getPictures } from './fetchPictures';
+import { getPictures, totalAmountOfPictures } from './fetchPictures';
 import { searchWord, gallery } from './picturesSearch';
 import { smoothScroll } from './smoothScroll';
 
@@ -10,14 +10,6 @@ let page = 1;
 refs.form.addEventListener('click', () => (page = 1));
 
 export function renderMarkup(array) {
-  if (array.length === 0 && page !== 1) {
-    page = 1;
-    refs.loadMoreBtn.style.display = 'none';
-    refs.loadMoreBtn.removeEventListener('click', loadMorePictures);
-    return Notify.failure(
-      "We're sorry, but you've reached the end of search results."
-    );
-  }
   if (array.length === 0) {
     return Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
@@ -57,6 +49,15 @@ export function renderMarkup(array) {
   refs.loadMoreBtn.style.display = 'block';
   refs.footer.style.display = 'flex';
   refs.loadMoreBtn.addEventListener('click', loadMorePictures);
+
+  if (page === Math.ceil(totalAmountOfPictures / 40)) {
+    page = 1;
+    refs.loadMoreBtn.style.display = 'none';
+    refs.loadMoreBtn.removeEventListener('click', loadMorePictures);
+    Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
   page += 1;
   return refs.gallery.insertAdjacentHTML('beforeend', markup);
 }
