@@ -16,7 +16,7 @@ async function onSubmitSearch(e) {
   e.preventDefault();
   galleryClean();
   refs.loadMoreBtn.removeEventListener('click', loadMorePictures);
-  searchWord = e.currentTarget.elements.searchQuery.value;
+  searchWord = e.target.elements.searchQuery.value;
   const search = await getPictures(searchWord, page);
   renderMarkup(search);
   gallery = new SimpleLightbox('.gallery a');
